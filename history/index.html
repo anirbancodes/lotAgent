@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>History-Agent | MyLotto</title>
+    <link rel="stylesheet" href="../style.css" />
+  </head>
+
+  <style>
+    body {
+      font-family: "lato", sans-serif;
+    }
+
+    @media all and (max-width: 767px) {
+      .table-header {
+        display: none;
+      }
+      li {
+        display: block;
+      }
+      .col {
+        flex-basis: 50%;
+      }
+      .col {
+        display: flex;
+        padding: 10px 0;
+      }
+    }
+    option {
+      font-size: 18px;
+      background-color: white;
+      color: orangered;
+    }
+    .line {
+      flex-direction: row;
+      display: flex;
+      white-space: initial;
+    }
+ 
+    .line > p {
+      width: 75vw;
+      white-space: initial;
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+      hyphens: auto;
+    }
+    .number {
+      font-size: 18px;
+    }
+  </style>
+  <body>
+    <div class="header">
+      <div style="display: flex; justify-content: space-between">
+        <h2>>> PlayLotto</h2>
+        <h3 class="margin-left-pc" id="time-counter"></h3>
+      </div>
+      <div class="header-user">
+        <p class="mob-margin-top-less-15" id="profile-name">Agent:&nbsp;</p>
+        <p class="mob-margin-top-less-15">
+          Credits: <span id="user-credit"></span>
+        </p>
+      </div>
+    </div>
+
+    <div
+      style="display: flex; justify-content: space-evenly; margin-bottom: 15px"
+    >
+      <div class="header-option header-option" id="header-game">
+        <p>Game</p>
+      </div>
+      <div class="header-option-active" id="header-history">
+        <p>History</p>
+      </div>
+      <div class="header-option" id="header-sale">
+        <p>Sale</p>
+      </div>
+      <div class="header-option" id="header-credits">
+        <p>Credits</p>
+      </div>
+    </div>
+
+    <div style="padding: 10px 20px; display: flex;flex-direction: column;">
+        <div style=" display: flex;">
+            <input type="date" id="date" />
+            &emsp; &emsp;
+                <select
+                name="history-match"
+                id="history-match"
+                class="btn-submit"
+                style="color: white"
+                >
+          <option value="9:0 AM">9:0 AM</option>
+          <option value="9:15 AM">9:15 AM</option>
+          <option value="9:30 AM">9:30 AM</option>
+          <option value="9:45 AM">9:45 AM</option>
+          <option value="10:0 AM">10:0 AM</option>
+          <option value="10:15 AM">10:15 AM</option>
+          <option value="10:30 AM">10:30 AM</option>
+          <option value="10:45 AM">10:45 AM</option>
+          <option value="11:0 AM">11:0 AM</option>
+          <option value="11:15 AM">11:15 AM</option>
+          <option value="11:30 AM">11:30 AM</option>
+          <option value="11:45 AM">11:45 AM</option>
+          <option value="11:0 AM">11:0 AM</option>
+          <option value="11:15 AM">11:15 AM</option>
+          <option value="11:30 AM">11:30 AM</option>
+          <option value="11:45 AM">11:45 AM</option>
+          <option value="12:0 AM">12:0 PM</option>
+          <option value="12:15 PM">12:15 PM</option>
+          <option value="12:30 PM">12:30 PM</option>
+          <option value="12:45 PM">12:45 PM</option>
+          <option value="1:0 PM">1:0 PM</option>
+          <option value="1:15 PM">1:15 PM</option>
+          <option value="1:30 PM">1:30 PM</option>
+          <option value="1:45 PM">1:45 PM</option>
+          <option value="2:0 PM">2:0 PM</option>
+          <option value="2:15 PM">2:15 PM</option>
+          <option value="2:30 PM">2:30 PM</option>
+          <option value="2:45 PM">2:45 PM</option>
+          <option value="3:0 PM">3:0 PM</option>
+          <option value="3:15 PM">3:15 PM</option>
+          <option value="3:30 PM">3:30 PM</option>
+          <option value="3:45 PM">3:45 PM</option>
+          <option value="4:0 PM">4:0 PM</option>
+          <option value="4:15 PM">4:15 PM</option>
+          <option value="4:30 PM">4:30 PM</option>
+          <option value="4:45 PM">4:45 PM</option>
+          <option value="5:0 PM">5:0 PM</option>
+          <option value="5:15 PM">5:15 PM</option>
+          <option value="5:30 PM">5:30 PM</option>
+          <option value="5:45 PM">5:45 PM</option>
+          <option value="6:0 PM">6:0 PM</option>
+          <option value="6:15 PM">6:15 PM</option>
+          <option value="6:30 PM">6:30 PM</option>
+          <option value="6:45 PM">6:45 PM</option>
+          <option value="7:0 PM">7:0 PM</option>
+          <option value="7:15 PM">7:15 PM</option>
+          <option value="7:30 PM">7:30 PM</option>
+          <option value="7:45 PM">7:45 PM</option>
+          <option value="8:0 PM">8:0 PM</option>
+          <option value="8:15 PM">8:15 PM</option>
+          <option value="8:30 PM">8:30 PM</option>
+          <option value="8:45 PM">8:45 PM</option>
+          <option value="9:0 PM">9:0 PM</option>
+        </select>
+    </div>
+    <div style="margin-top: 20px;display: flex; align-items: center;">
+      <a style=" width: 40vw; text-align: center;" class="btn-submit" id="showBtn">Show</a></div>
+    </div>
+    <div style="padding: 10px 20px">
+      <div id="sale-table">
+    </div>
+    <p id="comment-text" style="text-align: center"></p>
+
+    <div style="height: 50px"></div>
+    
+    <br /><br />
+    <div>
+      <p style="text-align: center; font-size: 10px">
+        © 2022, Myotto Technologies Ltd. All rights reserved.
+      </p>
+    </div>
+    <script src="../style.js"></script>
+    <script type="module" src="./firebase.js"></script>
+  </body>
+</html>

@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Agent | MyLot</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <div class="header">
+      <div style="display: flex; justify-content: space-between">
+        <h2>>> PlayLotto</h2>
+        <h3 class="margin-left-pc" id="time-counter"></h3>
+      </div>
+      <div class="header-user">
+        <p class="mob-margin-top-less-15" id="profile-name"></p>
+        <p class="mob-margin-top-less-15">
+          Credits: <span id="user-credit"></span>
+        </p>
+      </div>
+    </div>
+    <div style="display: flex; justify-content: space-evenly">
+      <div class="header-option header-option-active" id="header-game">
+        <p>Game</p>
+      </div>
+      <div class="header-option" id="header-history">
+        <p>History</p>
+      </div>
+      <div class="header-option" id="header-sale">
+        <p>Sale</p>
+      </div>
+      <div class="header-option" id="header-credits">
+        <p>Credits</p>
+      </div>
+    </div>
+    <br />
+    <div id="game-div">
+      <!-- <div class="search-box">
+        <input type="email" placeholder="Search for client" />
+      </div>
+      <br /> -->
+      <div class="draw-time">
+        <div class="draw-time-inner">
+          <p id="draw-date"></p>
+          <p>Next Draw: <span id="draw-time"></span></p>
+        </div>
+      </div>
+      <div class="section over-hide z-bigger">
+        <!-- <input class="checkbox" type="checkbox" name="general" id="general" />
+        <label class="for-checkbox" for="general"></label> -->
+        <!-- <div class="background-color"></div> -->
+        <div class="section over-hide z-bigger">
+          <div class="container pb-5">
+            <div class="row justify-content-center pb-5">
+              <!-- <div class="col-12 pt-5">
+                <p class="mb-4 pb-2">Select your choice</p>
+              </div> -->
+              <div class="col-12 pb-5">
+                <input
+                  class="checkbox-tools"
+                  type="radio"
+                  name="scrip"
+                  value="0"
+                  id="0"
+                  checked
+                />
+                <label class="for-checkbox-tools" for="0"> 0 </label
+                ><!--
+              --><input
+                  class="checkbox-tools"
+                  type="radio"
+                  name="scrip"
+                  value="1"
+                  id="1"
+                />
+                <label class="for-checkbox-tools" for="1"> 1 </label>
+                <input
+                  class="checkbox-tools"
+                  type="radio"
+                  name="scrip"
+                  value="2"
+                  id="2"
+                />
+                <label class="for-checkbox-tools" for="2"> 2 </label
+                ><!--
+              --><input
+                  class="checkbox-tools"
+                  type="radio"
+                  name="scrip"
+                  value="3"
+                  id="3"
+                />
+                <label class="for-checkbox-tools" for="3"> 3 </label
+                ><!--
+              --><input
+                  class="checkbox-tools"
+                  type="radio"
+                  name="scrip"
+                  value="4"
+                  id="4"
+                />
+                <label class="for-checkbox-tools" for="4"> 4 </label
+                ><!--
+              --><input
+                  class="checkbox-tools"
+                  type="radio"
+                  name="scrip"
+                  value="5"
+                  id="5"
+                />
+                <label class="for-checkbox-tools" for="5"> 5 </label
+                ><!--
+              --><input
+                  class="checkbox-tools"
+                  type="radio"
+                  name="scrip"
+                  value="6"
+                  id="6"
+                />
+                <label class="for-checkbox-tools" for="6"> 6 </label>
+                <input
+                  class="checkbox-tools"
+                  type="radio"
+                  name="scrip"
+                  value="7"
+                  id="7"
+                />
+                <label class="for-checkbox-tools" for="7"> 7 </label
+                ><input
+                  class="checkbox-tools"
+                  type="radio"
+                  name="scrip"
+                  value="8"
+                  id="8"
+                />
+                <label class="for-checkbox-tools" for="8"> 8 </label
+                ><input
+                  class="checkbox-tools"
+                  type="radio"
+                  name="scrip"
+                  value="9"
+                  id="9"
+                />
+                <label class="for-checkbox-tools" for="9"> 9 </label>
+              </div>
+
+              <div style="margin-top: -10px">
+                <p>Enter bet amount</p>
+                <input
+                  class="bet-amt"
+                  placeholder="0"
+                  id="bet-amt"
+                  type="number"
+                />
+              </div>
+              <br />
+              <div class="col-xl-10 pb-5">
+                <button class="btn-submit" id="btn-submit">Place Bet</button>
+              </div>
+              <!-- <button class="btn-submit" id="test-btn">
+                Check Time Firebase
+              </button> -->
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="padding: 0 20px">
+        <p>Bulk Order</p>
+
+        <!-- Bulk Order start -->
+        <div>
+          <select
+            name="bulk1-scrip"
+            id="bulk1-scrip"
+            class="btn-submit"
+            style="color: white"
+          >
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+          </select>
+          <input class="bet-amt" placeholder="0" id="bulk1-amt" type="number" />
+          <!-- <button class="btn-submit" id="add-more">Add More</button> -->
+          <br />
+          <br />
+        </div>
+        <!-- each bulk order end -->
+        <div>
+          <select
+            name="bulk2-scrip"
+            id="bulk2-scrip"
+            class="btn-submit"
+            style="color: white"
+          >
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+          </select>
+          <input class="bet-amt" placeholder="0" id="bulk2-amt" type="number" />
+          <!-- <button class="btn-submit" id="add-more">Add More</button> -->
+          <br /><br />
+        </div>
+        <!-- each bulk order end -->
+        <div>
+          <select
+            name="bulk3-scrip"
+            id="bulk3-scrip"
+            class="btn-submit"
+            style="color: white"
+          >
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+          </select>
+          <input class="bet-amt" placeholder="0" id="bulk3-amt" type="number" />
+          <!-- <button class="btn-submit" id="add-more">Add More</button> -->
+          <br />
+          <br />
+        </div>
+        <!-- each bulk order end -->
+        <div>
+          <select
+            name="bulk4-scrip"
+            id="bulk4-scrip"
+            class="btn-submit"
+            style="color: white"
+          >
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+          </select>
+          <input class="bet-amt" placeholder="0" id="bulk4-amt" type="number" />
+          <!-- <button class="btn-submit" id="add-more">Add More</button> -->
+          <br /><br />
+        </div>
+        <br />
+        <button class="btn-submit" id="btn-submit-bulk">
+          Place Bulk Order
+        </button>
+      </div>
+      <div style="padding: 60px 20px">
+        <p>Next Draw: <span id="draw-time2"></span></p>
+        <table>
+          <tbody id="game-draw-tbody"></tbody>
+        </table>
+      </div>
+      <!--        -->
+      <!-- <div style="padding: 0 40px">
+        <div class="client">
+          <button class="btn-submit">+</button>
+        </div>
+      </div> -->
+    </div>
+
+    <div style="height: 100px"></div>
+    <div style="display: flex; justify-content: space-between; padding: 0 10px">
+      <button class="btn-submit" id="logoutBtn">Log out</button>
+    </div>
+    <br />
+    <div style="display: flex; padding: 0 10px; flex-direction: column">
+      <a class="btn-submit" href="/pages/add.html">Pay for credit</a>
+      <br />
+    </div>
+    <br /><br />
+    <div>
+      <p style="text-align: center; font-size: 10px">
+        © 2022, MyLotto Technologies Ltd. All rights reserved.
+      </p>
+    </div>
+    <script src="/style.js"></script>
+    <script type="module" src="./js/index.js"></script>
+    <script type="module" src="./js/firebase.js"></script>
+  </body>
+</html>
