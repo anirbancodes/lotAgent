@@ -80,14 +80,15 @@ p {
   background-image: linear-gradient(138deg, var(--red), var(--yellow));
 }
 .header-option {
-  width: 25%;
+  width: 23%;
   text-align: center;
   background-color: white;
   cursor: pointer;
+  border-radius: 30px;
 }
 
 .header-option-active {
-  width: 25%;
+  width: 23%;
   text-align: center;
   background-color: orangered;
   color: white;

@@ -40,43 +40,39 @@ async function loadUserData(email) {
     let now = new Date();
     let date =
       now.getFullYear() + "-" + (now.getMonth() + 1) + "-" + now.getDate();
-    historyTable(email, date);
+    creditTable(email, date);
   }
 }
-//displayTime();
-async function displayTime() {
-  await fetchTime();
-  document.getElementById("time-counter").innerHTML = time;
-  // t();
-}
+
 function showUserCredits(name, credit) {
   document.getElementById("profile-name").textContent += name;
   document.getElementById("user-credit").textContent = credit;
 }
-async function historyTable(email, date) {
+async function creditTable(email, date) {
   const ref = doc(db, "agents", email, "offline", "lotto", "credits", date);
 
   const docSnap = await getDoc(ref);
   if (docSnap.exists()) {
-    const credits = docSnap.data().cred;
     document.getElementById("credit-table").innerHTML = `<div class="line">
     <p class="number">Time</p>
     <p class="number" style="margin-left: 20px">
       &emsp;&emsp;&emsp;&emsp;&emsp;Amt
     </p>
   </div>`;
-    credits.forEach((trans) => {
+    const credits = docSnap.data();
+    let keys = Object.keys(credits);
+    keys.forEach((match) => {
       document.getElementById("credit-table").innerHTML +=
         `  <div class="line">
-        <p class="number">` +
-        trans.time +
+          <p class="number">` +
+        match +
         `</p>
-        <p class="number" style="margin-left: 20px">:&emsp; ` +
-        trans.amt +
+          <p class="number" style="margin-left: 20px">:&emsp; ` +
+        credits[match] +
         `</p>
-      </div>`;
+        </div>`;
     });
-  }
+  } else alert("No credit added today");
 }
 const showBtn = document.getElementById("showBtn");
 showBtn.addEventListener("click", () => {
@@ -95,5 +91,5 @@ showBtn.addEventListener("click", () => {
     date = date1;
   }
 
-  historyTable(auth.currentUser.email, date);
+  creditTable(auth.currentUser.email, date);
 });

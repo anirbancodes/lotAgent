@@ -17,13 +17,9 @@ import {
 import {
   getDoc,
   doc,
-  updateDoc,
   arrayUnion,
-  serverTimestamp,
   runTransaction,
   increment,
-  setDoc,
-  writeBatch,
   getFirestore,
 } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
 
@@ -118,32 +114,6 @@ function drawTbody(data) {
   });
 }
 
-/* async function testFuncFirebaseTimeCheck() {
-  console.log(await fetchTime().time);
-  await updateDoc(doc(db, "games", "2022-5-5"), {
-    time: serverTimestamp(),
-  });
-}
-
-document.getElementById("test-btn").addEventListener("click", () => {
-  testFuncFirebaseTimeCheck();
-}); */
-
-async function add(user_email) {
-  const amt = document.getElementById("amount").value;
-  alert("89");
-  await updateDoc(
-    doc(db, "users", user_email),
-    {
-      credHist: arrayUnion({ time: date, trans: amt, how: "Dealer Added" }),
-      credit: increment(amt),
-      credits: arrayUnion({ time: date, trans: amt, how: "Dealer Added" }),
-    },
-    { merge: true }
-  );
-  //minus from dealer
-}
-
 let betClicked = false;
 //game - bet clicked
 async function play(email, number, amount) {
@@ -206,7 +176,7 @@ async function play(email, number, amount) {
             {
               [`${drawTime}.${number}`]: arrayUnion({
                 amt: amount,
-                t: "d",
+                t: "a",
                 time: time + " " + ampm,
                 email: email,
               }),
@@ -244,100 +214,6 @@ async function play(email, number, amount) {
       } catch (e) {
         alert("Transaction failed: ", e);
       }
-
-      /*const batch = writeBatch(db);
-
-      batch.update(
-        doc(db, "games", date),
-        {
-          [`${drawTime}.${number}`]: arrayUnion({
-            amt: amount,
-            t: "d",
-            time: time + " " + ampm,
-            email: email,
-          }),
-        },
-        { merge: true }
-      );
-
-      batch.update(doc(db, "dealers", email, "offline", "lotto"), {
-        credit: increment(-1 * amount),
-        totPlay: increment(amount),
-      });
-
-      batch.update(doc(db, "dealers", email), {
-        credit: increment(-1 * amount),
-      });
-      batch.update(
-        doc(db, "dealers", email, "offline", "lotto", "games", date),
-        {
-          [`${drawTime}.${number}`]: arrayUnion({
-            time: time + " " + ampm,
-            amt: amount,
-          }),
-        },
-        { merge: true }
-      );
-      batch.update(
-        doc(db, "dealers", email, "offline", "lotto", "sale", date),
-        {
-          [`${drawTime}`]: increment(Number(amount)),
-        },
-        { merge: true }
-      );
-      // .catch((error) => {
-      //   betClicked = false;
-      //   console.log(error);
-      // });
-
-      await batch.commit(); */
-
-      /* await updateDoc(
-        doc(db, "games", date),
-        {
-          [`${drawTime}.${number}`]: arrayUnion({
-            amt: amount,
-            t: "d",
-            time: time + " " + ampm,
-            email: email,
-          }),
-        },
-        { merge: true }
-      );
-      await updateDoc(
-        doc(db, "dealers", email, "offline", "lotto"),
-        {
-          credit: increment(-1 * amount),
-          totPlay: increment(amount),
-        },
-        { merge: true }
-      );
-
-      await updateDoc(
-        doc(db, "dealers", email, "offline", "lotto", "games", date),
-        {
-          [`${drawTime}.${number}`]: arrayUnion({
-            time: time + " "+ampm,
-            amt: amount,
-          }),
-        },
-        { merge: true }
-      );
-      await updateDoc(
-        doc(db, "dealers", email, "offline", "lotto", "sale", date),
-        {
-          [`${drawTime}`]: increment(Number(amount)),
-        },
-        { merge: true }
-      ).catch((error) => {
-        betClicked = false;
-        console.log(error);
-      });
-
-      await updateDoc(doc(db, "dealers", email), {
-        credit: increment(-1 * amount),
-      });
-      */
 
       betClicked = false;
       //window.location = "/";
