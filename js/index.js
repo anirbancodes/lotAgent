@@ -67,14 +67,17 @@ function setGameDrawTime() {
   let gameMin = Math.ceil(min / 15) * 15;
   let gameHr = hms[0];
   if (min == 0 || min == 15 || min == 30 || min == 45) gameMin += 15;
-  if (gameMin == 60) {
+  if (gameMin == 60 && gameHr != 12) {
     gameMin = 0;
     gameHr++;
+  } else if (gameMin == 60 && gameHr == 12) {
+    gameMin = 0;
+    gameHr = 1;
   }
   let drawTime,
     ampm = hms[3];
   if (gameHr < 9 && ampm == "AM") drawTime = "9:0 AM";
-  else if (gameHr > 9 && ampm == "PM"  && gameHr !=12) drawTime = "9:0 AM";
+  else if (gameHr > 9 && ampm == "PM" && gameHr != 12) drawTime = "9:0 AM";
   else drawTime = gameHr + ":" + gameMin + " " + ampm;
 
   document.getElementById("draw-date").innerHTML = date;

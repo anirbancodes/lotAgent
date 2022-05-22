@@ -73,13 +73,16 @@ async function showDrawTbody(email) {
     ampm = t22.ampm;
   let gameMin = Math.ceil(min / 15) * 15;
   if (min == 0 || min == 15 || min == 30 || min == 45) gameMin += 15;
-  if (gameMin == 60) {
+  if (gameMin == 60 && gameHr != 12) {
     gameMin = 0;
     gameHr++;
+  } else if (gameMin == 60 && gameHr == 12) {
+    gameMin = 0;
+    gameHr = 1;
   }
   let drawTime;
   if (gameHr < 9 && ampm == "AM") drawTime = "9:0 AM";
-  else if (gameHr > 9 && ampm == "PM" && gameHr !=12) drawTime = "9:0 AM";
+  else if (gameHr > 9 && ampm == "PM" && gameHr != 12) drawTime = "9:0 AM";
   else drawTime = gameHr + ":" + gameMin + " " + t22.ampm;
 
   const ref = doc(db, "agents", email, "offline", "lotto", "games", date);
@@ -132,13 +135,16 @@ async function play(email, number, amount) {
         gameHr = t22.hr;
       let gameMin = Math.ceil(min / 15) * 15;
       if (min == 0 || min == 15 || min == 30 || min == 45) gameMin += 15;
-      if (gameMin == 60) {
+      if (gameMin == 60 && gameHr != 12) {
         gameMin = 0;
         gameHr++;
+      } else if (gameMin == 60 && gameHr == 12) {
+        gameMin = 0;
+        gameHr = 1;
       }
       let drawTime;
       if (gameHr < 9 && ampm == "AM") drawTime = "9:0 AM";
-      else if (gameHr > 9 && ampm == "PM" && gameHr !=12) {
+      else if (gameHr > 9 && ampm == "PM" && gameHr != 12) {
         alert("Game Closed");
         betClicked = false;
         return;
@@ -165,6 +171,7 @@ async function play(email, number, amount) {
               doc(db, "agents", email, "offline", "lotto", "games", date),
               {}
             );
+
             transaction.set(
               doc(db, "agents", email, "offline", "lotto", "sale", date),
               {}
@@ -192,6 +199,7 @@ async function play(email, number, amount) {
           transaction.update(doc(db, "agents", email), {
             credit: increment(-1 * amount),
           });
+
           transaction.update(
             doc(db, "agents", email, "offline", "lotto", "games", date),
             {
@@ -202,6 +210,7 @@ async function play(email, number, amount) {
             },
             { merge: true }
           );
+
           transaction.update(
             doc(db, "agents", email, "offline", "lotto", "sale", date),
             {
@@ -210,9 +219,8 @@ async function play(email, number, amount) {
             { merge: true }
           );
         });
-        console.log("Transaction successfully committed!");
       } catch (e) {
-        alert("Transaction failed: ", e);
+        alert("Failed: ", e);
       }
 
       betClicked = false;
