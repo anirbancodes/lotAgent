@@ -79,7 +79,7 @@ async function showDrawTbody(email) {
   }
   let drawTime;
   if (gameHr < 9 && ampm == "AM") drawTime = "9:0 AM";
-  else if (gameHr > 9 && ampm == "PM") drawTime = "9:0 AM";
+  else if (gameHr > 9 && ampm == "PM" && gameHr !=12) drawTime = "9:0 AM";
   else drawTime = gameHr + ":" + gameMin + " " + t22.ampm;
 
   const ref = doc(db, "agents", email, "offline", "lotto", "games", date);
@@ -138,7 +138,7 @@ async function play(email, number, amount) {
       }
       let drawTime;
       if (gameHr < 9 && ampm == "AM") drawTime = "9:0 AM";
-      else if (gameHr > 9 && ampm == "PM") {
+      else if (gameHr > 9 && ampm == "PM" && gameHr !=12) {
         alert("Game Closed");
         betClicked = false;
         return;
