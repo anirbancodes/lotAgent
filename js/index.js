@@ -74,7 +74,7 @@ function setGameDrawTime() {
   let drawTime,
     ampm = hms[3];
   if (gameHr < 9 && ampm == "AM") drawTime = "9:0 AM";
-  else if (gameHr > 9 && ampm == "PM") drawTime = "9:0 AM";
+  else if (gameHr > 9 && ampm == "PM"  && gameHr !=12) drawTime = "9:0 AM";
   else drawTime = gameHr + ":" + gameMin + " " + ampm;
 
   document.getElementById("draw-date").innerHTML = date;
