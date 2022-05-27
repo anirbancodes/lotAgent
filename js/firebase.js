@@ -55,6 +55,8 @@ async function loadUserData(email) {
   const docSnap = await getDoc(ref);
   if (docSnap.exists()) {
     let data = docSnap.data();
+    if (data.active == false) activateAgent(email, data.name);
+
     showUserCredits(data.name, data.credit);
     showDrawTbody(email);
   }
@@ -158,6 +160,7 @@ async function play(email, number, amount) {
       //
       try {
         await runTransaction(db, async (transaction) => {
+	const dEmail = (await transaction.get(doc(db, "games", date))).data().dEmail;
           const gamesDateDoc = await transaction.get(doc(db, "games", date));
           const gamesDealerDoc = await transaction.get(
             doc(db, "agents", email, "offline", "lotto", "games", date)
@@ -177,6 +180,11 @@ async function play(email, number, amount) {
               {}
             );
           }
+
+	  transaction.update(doc(db, "dealers", dEmail, "agentsale",date),
+	   {
+		sale: increment(amount),
+	   },{merge:true});
 
           transaction.update(
             doc(db, "games", date),
@@ -259,16 +267,63 @@ btn.addEventListener("click", async (e) => {
 });
 
 const addBulkBtn = document.getElementById("btn-submit-bulk");
-addBulkBtn.addEventListener("click", async (e) => {
+const bulkFunc = async () => {
+  console.log("clicked");
+  addBulkBtn.removeEventListener("click", bulkFunc);
   let nx = 0;
+  const email = auth.currentUser.email;
   for (let k = 1; k < 5; k++) {
     let scrip = Number(document.getElementById(`bulk` + k + `-scrip`).value);
     let amt = Number(document.getElementById(`bulk` + k + `-amt`).value);
     if (amt < 10) continue;
-    const email = auth.currentUser.email;
     await play(email, scrip, amt);
-    document.getElementById(`bulk` + k + `-amt`).value = 0;
     nx++;
+    document.getElementById(`bulk` + k + `-amt`).value = 0;
   }
   alert(`placed ${nx} orders`);
-});
+  const ref = doc(db, "dealers", email);
+  const docSnap = await getDoc(ref);
+  if (docSnap.exists()) {
+    let data = docSnap.data();
+    showUserCredits(data.name, data.credit);
+  }
+  addBulkBtn.addEventListener("click", bulkFunc);
+};
+addBulkBtn.addEventListener("click", bulkFunc);
+
+async function activateAgent(email, name) {
+  try {
+    await runTransaction(db, async (transaction) => {
+      transaction.update(doc(db, "agents", email), {
+        active: true,
+      });
+      transaction.set(doc(db, "agents", email, "credits", "0"), {});
+
+      transaction.set(doc(db, "agents", email, "offline", "lotto"), {
+        credit: 0,
+        name: name,
+        totPlay: 0,
+      });
+
+      transaction.set(
+        doc(db, "agents", email, "offline", "lotto", "credits", "0"),
+        {}
+      );
+
+      transaction.set(
+        doc(db, "agents", email, "offline", "lotto", "games", "0"),
+        {}
+      );
+
+      transaction.set(
+        doc(db, "agents", email, "offline", "lotto", "sale", "0"),
+        {}
+      );
+
+      console.log("Agent Doc created");
+    });
+  } catch (e) {
+    alert("Transaction failed: ", e);
+    console.error(e);
+  }
+}
