@@ -62,7 +62,7 @@ async function historyTable(email, date, match) {
   const docSnap = await getDoc(ref);
   if (docSnap.exists()) {
     const game = docSnap.data()[match];
-    console.log(game);
+
     if (game) {
       for (let i = 0; i < 10; i++) {
         let rowData = "";
@@ -97,7 +97,6 @@ const showBtn = document.getElementById("showBtn");
 showBtn.addEventListener("click", () => {
   let date = document.getElementById("date").value;
   let match = document.getElementById("history-match").value;
-  console.log(match);
   let i1 = date.indexOf("-"),
     i2 = date.lastIndexOf("-");
   date =

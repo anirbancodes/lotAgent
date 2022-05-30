@@ -127,8 +127,10 @@ async function play(email, number, amount) {
   const docSnap = await getDoc(ref);
   if (docSnap.exists()) {
     let data = docSnap.data();
+
     if (amount <= data.credit) {
       const t22 = await fetchTime();
+
       const date = t22.date,
         time = t22.time,
         ampm = t22.ampm;
@@ -152,18 +154,28 @@ async function play(email, number, amount) {
         return;
       } else drawTime = gameHr + ":" + gameMin + " " + ampm;
 
-      // if (min % 10 == 9 && sec >= 50) {
-      //   alert("Time UP");
-      //   window.location = "/";
-      //   return;
-      // }
-      //
+      if (
+        (min % 10 == 59 && sec >= 45) ||
+        (min % 10 == 14 && sec >= 45) ||
+        (min % 10 == 29 && sec >= 45) ||
+        (min % 10 == 44 && sec >= 45)
+      ) {
+        alert("Time UP");
+        window.location = "/";
+        return;
+      }
+
       try {
         await runTransaction(db, async (transaction) => {
-	const dEmail = (await transaction.get(doc(db, "games", date))).data().dEmail;
+          const dEmail = (
+            await transaction.get(doc(db, "agents", email))
+          ).data().dEmail;
           const gamesDateDoc = await transaction.get(doc(db, "games", date));
           const gamesDealerDoc = await transaction.get(
             doc(db, "agents", email, "offline", "lotto", "games", date)
+          );
+          const agentSaleDoc = await transaction.get(
+            doc(db, "dealers", dEmail, "agentsale", date)
           );
           if (!gamesDateDoc.exists()) {
             transaction.set(doc(db, "games", date), {});
@@ -181,10 +193,16 @@ async function play(email, number, amount) {
             );
           }
 
-	  transaction.update(doc(db, "dealers", dEmail, "agentsale",date),
-	   {
-		sale: increment(amount),
-	   },{merge:true});
+          if (!agentSaleDoc.exists()) {
+            transaction.set(doc(db, "dealers", dEmail, "agentsale", date), {});
+          }
+          transaction.update(
+            doc(db, "dealers", dEmail, "agentsale", date),
+            {
+              sale: increment(amount),
+            },
+            { merge: true }
+          );
 
           transaction.update(
             doc(db, "games", date),
@@ -228,6 +246,7 @@ async function play(email, number, amount) {
           );
         });
       } catch (e) {
+        console.error(e);
         alert("Failed: ", e);
       }
 

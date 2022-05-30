@@ -60,7 +60,7 @@ body {
 }
 p {
   font-family: "Poppins", sans-serif;
-  font-size: 14px;
+  font-size: 12px;
   line-height: 30px;
   letter-spacing: 1px;
   font-weight: 500;
@@ -74,13 +74,13 @@ p {
      width: 160px; */
   color: white;
   cursor: pointer;
-  font-size: 16px;
-  padding: 10px 40px;
+  font-size: 14px;
+  padding: 8px 40px;
   border-radius: 20px;
   background-image: linear-gradient(138deg, var(--red), var(--yellow));
 }
 .header-option {
-  width: 23%;
+  width: 21%;
   text-align: center;
   background-color: white;
   cursor: pointer;
@@ -88,12 +88,16 @@ p {
 }
 
 .header-option-active {
-  width: 23%;
+  width: 21%;
   text-align: center;
   background-color: orangered;
   color: white;
   cursor: pointer;
   border-radius: 30px;
+}
+.fs-16 {
+  font-size: 16px;
+  padding: 12px 40px;
 }
 .search-box {
   text-align: center;

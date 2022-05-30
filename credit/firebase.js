@@ -21,11 +21,9 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth();
-//import { fetchTime } from "./index.js";
 onAuthStateChanged(auth, (user) => {
   if (user) {
     const uid = user.uid;
-    //showUserEmail(user.email);
     loadUserData(user.email);
   } else {
     window.location = "/pages/login.html";
@@ -52,6 +50,8 @@ async function creditTable(email, date) {
   const ref = doc(db, "agents", email, "offline", "lotto", "credits", date);
 
   const docSnap = await getDoc(ref);
+  document.getElementById("comment-text").innerHTML = "";
+  document.getElementById("credit-table").innerHTML = "";
   if (docSnap.exists()) {
     document.getElementById("credit-table").innerHTML = `<div class="line">
     <p class="number">Time</p>
@@ -72,7 +72,9 @@ async function creditTable(email, date) {
         `</p>
         </div>`;
     });
-  } else alert("No credit added today");
+  } else
+    document.getElementById("comment-text").innerHTML =
+      "No credit added on " + date;
 }
 const showBtn = document.getElementById("showBtn");
 showBtn.addEventListener("click", () => {
