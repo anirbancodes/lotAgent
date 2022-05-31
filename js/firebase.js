@@ -67,11 +67,13 @@ function showUserCredits(name, credit) {
   document.getElementById("user-credit").textContent = credit;
 }
 
-async function showDrawTbody(email) {
+async function calcDrawTime() {
   const t22 = await fetchTime();
   let date = t22.date,
+    time = t22.time,
     min = t22.min,
     gameHr = t22.hr,
+    sec = t22.sec,
     ampm = t22.ampm;
   let gameMin = Math.ceil(min / 15) * 15;
   if (min == 0 || min == 15 || min == 30 || min == 45) gameMin += 15;
@@ -83,15 +85,19 @@ async function showDrawTbody(email) {
     gameHr = 1;
   }
   let drawTime;
+  if (gameHr == 12 && gameMin == 0 && ampm == "AM") ampm = "PM";
   if (gameHr < 9 && ampm == "AM") drawTime = "9:0 AM";
   else if (gameHr > 9 && ampm == "PM" && gameHr != 12) drawTime = "9:0 AM";
   else drawTime = gameHr + ":" + gameMin + " " + t22.ampm;
+  return { date, drawTime, time, gameHr, ampm, min, sec };
+}
 
+async function showDrawTbody(email) {
+  const { date, drawTime } = await calcDrawTime();
   const ref = doc(db, "agents", email, "offline", "lotto", "games", date);
   const docSnap = await getDoc(ref);
   if (docSnap.exists()) {
     let gameData = docSnap.data()[drawTime];
-    if (gameData == undefined) console.log("oops");
     drawTbody(gameData);
   }
 }
@@ -120,40 +126,20 @@ function drawTbody(data) {
 }
 
 let betClicked = false;
-//game - bet clicked
 async function play(email, number, amount) {
   betClicked = true;
   const ref = doc(db, "agents", email, "offline", "lotto");
   const docSnap = await getDoc(ref);
   if (docSnap.exists()) {
     let data = docSnap.data();
-
     if (amount <= data.credit) {
-      const t22 = await fetchTime();
-
-      const date = t22.date,
-        time = t22.time,
-        ampm = t22.ampm;
-      let min = t22.min,
-        sec = t22.sec,
-        gameHr = t22.hr;
-      let gameMin = Math.ceil(min / 15) * 15;
-      if (min == 0 || min == 15 || min == 30 || min == 45) gameMin += 15;
-      if (gameMin == 60 && gameHr != 12) {
-        gameMin = 0;
-        gameHr++;
-      } else if (gameMin == 60 && gameHr == 12) {
-        gameMin = 0;
-        gameHr = 1;
-      }
-      let drawTime;
-      if (gameHr < 9 && ampm == "AM") drawTime = "9:0 AM";
-      else if (gameHr > 9 && ampm == "PM" && gameHr != 12) {
+      const { date, drawTime, time, gameHr, ampm, min, sec } =
+        await calcDrawTime();
+      if (gameHr > 9 && ampm == "PM" && gameHr != 12) {
         alert("Game Closed");
         betClicked = false;
         return;
-      } else drawTime = gameHr + ":" + gameMin + " " + ampm;
-
+      }
       if (
         (min % 10 == 59 && sec >= 45) ||
         (min % 10 == 14 && sec >= 45) ||
@@ -164,7 +150,6 @@ async function play(email, number, amount) {
         window.location = "/";
         return;
       }
-
       try {
         await runTransaction(db, async (transaction) => {
           const dEmail = (
@@ -180,7 +165,6 @@ async function play(email, number, amount) {
           if (!gamesDateDoc.exists()) {
             transaction.set(doc(db, "games", date), {});
           }
-
           if (!gamesDealerDoc.exists()) {
             transaction.set(
               doc(db, "agents", email, "offline", "lotto", "games", date),
@@ -203,7 +187,6 @@ async function play(email, number, amount) {
             },
             { merge: true }
           );
-
           transaction.update(
             doc(db, "games", date),
             {
@@ -216,16 +199,13 @@ async function play(email, number, amount) {
             },
             { merge: true }
           );
-
           transaction.update(doc(db, "agents", email, "offline", "lotto"), {
             credit: increment(-1 * amount),
             totPlay: increment(amount),
           });
-
           transaction.update(doc(db, "agents", email), {
             credit: increment(-1 * amount),
           });
-
           transaction.update(
             doc(db, "agents", email, "offline", "lotto", "games", date),
             {
@@ -236,7 +216,6 @@ async function play(email, number, amount) {
             },
             { merge: true }
           );
-
           transaction.update(
             doc(db, "agents", email, "offline", "lotto", "sale", date),
             {
@@ -249,13 +228,12 @@ async function play(email, number, amount) {
         console.error(e);
         alert("Failed: ", e);
       }
-
       betClicked = false;
       //window.location = "/";
       document.getElementById("bet-amt").value = 0;
       await showDrawTbody(email);
     } else {
-      alert(`insufficient credits, add credits`);
+      alert(`Not enough credits`);
     }
   }
 }
@@ -280,7 +258,7 @@ btn.addEventListener("click", async (e) => {
       showUserCredits(data.name, data.credit);
     }
   } else {
-    alert("bet atleast 10 credit");
+    alert("10 credits required");
     //betClicked = false;
   }
 });
@@ -342,7 +320,7 @@ async function activateAgent(email, name) {
       console.log("Agent Doc created");
     });
   } catch (e) {
-    alert("Transaction failed: ", e);
+    alert("Activation failed");
     console.error(e);
   }
 }
