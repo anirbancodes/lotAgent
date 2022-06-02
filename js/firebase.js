@@ -79,9 +79,10 @@ async function calcDrawTime() {
   let drawTime;
   if (gameHr == 12 && gameMin == 0 && ampm == "AM") ampm = "PM";
   if (gameHr < 9 && ampm == "AM") drawTime = "9:0 AM";
-  else if (gameHr > 9 && gameMin > 0 && ampm == "PM" && gameHr != 12) drawTime = "9:0 AM";
+  else if (gameHr >= 9 && gameMin > 0 && ampm == "PM" && gameHr != 12)
+    drawTime = "9:0 AM";
   else drawTime = gameHr + ":" + gameMin + " " + ampm;
-  return { date, drawTime, time, gameHr, ampm, min, sec };
+  return { date, drawTime, time, gameMin, gameHr, ampm, min, sec };
 }
 
 async function showDrawTbody(email) {
@@ -125,10 +126,10 @@ async function play(email, number, amount) {
   if (docSnap.exists()) {
     let data = docSnap.data();
     if (amount <= data.credit) {
-      const { date, drawTime, time, gameHr, ampm, min, sec } =
+      const { date, drawTime, time, gameMin, gameHr, ampm, min, sec } =
         await calcDrawTime();
       if (
-        (gameHr > 9 && ampm == "PM" && gameHr != 12) |
+        (gameHr >= 9 && gameMin > 0 && ampm == "PM" && gameHr != 12) ||
         (gameHr == 12 && ampm == "AM")
       ) {
         alert("Game Closed");
