@@ -76,16 +76,27 @@ function setGameDrawTime() {
   }
   let drawTime,
     ampm = hms[3];
-  if (gameHr == 12 && gameMin == 0 && ampm == "AM") ampm = "PM";
-  if (gameHr < 9 && ampm == "AM") drawTime = "9:0 AM";
-  else if (
+  if (gameHr == 12 && gameMin == 0) {
+    if (ampm == "AM") ampm = "PM";
+    else if (ampm == "PM") ampm = "AM";
+  }
+  // if (gameHr < 9 && ampm == "AM") drawTime = "9:0 AM";
+  // else if (
+  //   (gameHr > 9 && ampm == "PM" && gameHr != 12) ||
+  //   (gameHr == 9 && gameMin > 0 && ampm == "PM" && gameHr != 12)
+  // )
+  if (
+    (gameHr < 9 && ampm == "AM") ||
+    //gameHr >= 9 && gameMin > 0 && ampm == "PM" && gameHr != 12
     (gameHr > 9 && ampm == "PM" && gameHr != 12) ||
-    (gameHr == 9 && gameMin > 0 && ampm == "PM" && gameHr != 12)
+    (gameHr == 9 && gameMin > 0 && ampm == "PM" && gameHr != 12) ||
+    (gameHr == 12 && //&& gameMin > 0
+      ampm == "AM")
   )
     drawTime = "9:0 AM";
   else drawTime = gameHr + ":" + gameMin + " " + ampm;
 
-  document.getElementById("draw-date").innerHTML = date;
+  //document.getElementById("draw-date").innerHTML = date;
   document.getElementById("draw-time").innerHTML = drawTime;
   document.getElementById("draw-time2").innerHTML = drawTime;
 }
