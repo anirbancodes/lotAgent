@@ -80,7 +80,7 @@
     const docSnap = await getDoc(ref);
 
     if (docSnap.exists()) {
-      const dEmail = docSnap.data().dName;
+      const dEmail = docSnap.data().dEmail;
       document.getElementById("dealer-email").innerHTML = dEmail;
     }
   }
