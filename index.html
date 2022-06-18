@@ -7,7 +7,58 @@
     <title>Agent | MyLot</title>
     <link rel="stylesheet" href="style.css" />
   </head>
-
+  <style>
+    .container2 {
+      display: flex;
+      margin-left: 10vw;
+      align-items: center;
+      margin-top: 30px;
+    }
+    .sale-table {
+      width: 58vw;
+    }
+    .sale-table .li {
+      /* width: 50vw; */
+      border-radius: 0px;
+      padding: 0px 30px;
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+    .col2 {
+      font-size: 14px;
+    }
+    .or2 {
+      color: orangered;
+    }
+    .sale-table .table-header {
+      background-color: white;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      color: orangered;
+    }
+    .sale-table .table-row {
+      background-color: #fff;
+      /* box-shadow: 0px 0px 9px 0px rgba(0, 0, 0, 0.1); */
+      box-shadow: rgb(199, 199, 199) 0px 18px 50px -10px;
+    }
+    @media all and (max-width: 767px) {
+      .table-header {
+        display: none;
+      }
+      .li {
+        display: block;
+      }
+      .col2 {
+        flex-basis: 50%;
+      }
+      .col2 {
+        display: flex;
+        padding: 5px 0;
+      }
+    }
+  </style>
   <body>
     <div class="header">
       <div style="display: flex; justify-content: space-between">
@@ -273,6 +324,15 @@
         <table>
           <tbody id="game-draw-tbody"></tbody>
         </table>
+      </div>
+    </div>
+
+    <div style="margin-top: 15px">
+      <div style="display: flex; justify-content: center; align-items: center">
+        <button class="btn-submit" id="refreshResBtn">Refresh Result</button>
+      </div>
+      <div class="container2">
+        <ul class="sale-table" id="sale-tbody"></ul>
       </div>
     </div>
 
