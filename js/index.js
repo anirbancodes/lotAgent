@@ -18,7 +18,7 @@ let date, time, hms;
 
 async function fetchTime() {
   let apiData;
-  await fetch("https://qctime1.p.rapidapi.com/time", optionsQcTime1)
+  await fetch("https://time.api.mylot.org")
     .then((res) => res.json())
     .then((res) => {
       apiData = res;
@@ -27,7 +27,7 @@ async function fetchTime() {
       hms = [res.hr, res.min, res.sec, res.ampm];
     })
     .catch(async (err) => {
-      await fetch("https://livetime.p.rapidapi.com/time", optionsLiveTime)
+      await fetch("https://time.api.mylotto.in")
         .then((res) => res.json())
         .then((res) => {
           apiData = res;
